@@ -228,20 +228,35 @@ internal class Program
                     }
                     else if (callbackQuery.Data.Split(" ")[0].Equals("run"))
                     {
+                        var deviceName = callbackQuery.Data.Split(" ")[1];
+                        HttpClientHandler clientHandler = new HttpClientHandler();
+                        clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+        
+                        HttpClient client = new HttpClient(clientHandler);
+                        var response = await client.PostAsync($"https://192.168.1.3:44323/Heads/PostChangeStatus?deviceName={deviceName}&value={1}", null);
+                        
                         await botClient.AnswerCallbackQueryAsync(callbackQuery.Id);
 
                         await botClient.SendTextMessageAsync(
                             chat.Id,
-                            $"Вы нажали на {callbackQuery.Data}");
+                            $"Вы включили устройство {deviceName}");
                         return;
                     }
                     else if (callbackQuery.Data.Split(" ")[0].Equals("stop"))
                     {
+                        var deviceName = callbackQuery.Data.Split(" ")[1];
+                        HttpClientHandler clientHandler = new HttpClientHandler();
+                        clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+        
+                        HttpClient client = new HttpClient(clientHandler);
+                        var response = await client.PostAsync($"https://192.168.1.3:44323/Heads/PostChangeStatus?deviceName={deviceName}&value={0}", null);
+                        
                         await botClient.AnswerCallbackQueryAsync(callbackQuery.Id);
 
                         await botClient.SendTextMessageAsync(
                             chat.Id,
-                            $"Вы нажали на {callbackQuery.Data}");
+                            $"Вы выключили устройство {deviceName}");
+                        
                         return;
                     }
 
