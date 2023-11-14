@@ -139,6 +139,30 @@ internal class Program
                                 return;
                             }
 
+                            if (message.Text == "/menu")
+                            {
+                                WebAppInfo webAppInfo = new WebAppInfo()
+                                {
+                                    Url = "https://192.168.1.6:5001/telegram"
+                                };
+                                var inlineKeyboard = new InlineKeyboardMarkup(
+                                    new List<InlineKeyboardButton[]>()
+                                    {
+                                        new InlineKeyboardButton[]
+                                        {
+                                            InlineKeyboardButton.WithWebApp("Это кнопка с сайтом", webAppInfo), 
+                                        }
+                                    });
+                                       
+                                
+                                await botClient.SendTextMessageAsync(
+                                    chat.Id,
+                                    "Меню",
+                                    replyMarkup: inlineKeyboard);
+                                
+                                return;
+                            }
+
                             return;
                         }
                     }
@@ -223,6 +247,7 @@ internal class Program
 
                     return;
                 }
+               
             }
         }
         catch (Exception ex)
